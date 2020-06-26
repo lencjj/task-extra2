@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewData["Title"] = "SpeechToText";
+}
+
+<h2>Speech To Text</h2>
+<h3>Upload Audio File</h3>
+<form onsubmit="submitAudio()" enctype="multipart/form-data" method="post">
+    <input type="file" name="file" id="file">
+    <br>
+    <button id="uploadBtn" name="uploadBtn" type="submit">Upload</button>
+</form>
+<h5 name="text" id="text"></h5>
+<script>
+    function submitAudio() {
+        event.preventDefault();
+        var fileInput = document.getElementById('file');
+        var file = fileInput.files[0];
+        var formData = new FormData();
+        formData.append('file', file);
+        $.ajax({
+            url: '/api/SpeechToText/Convert',
+            method: 'POST',
+            processData: false,
+            contentType: false,
+            async: false,
+            data: formData,
+            success: function (data) {
+                document.getElementById("text").innerHTML = "Converted Text: " +data;
+            },
+            error: function () {
+                alert("Error");
+            }
+        });
+    }
+</script>
+
